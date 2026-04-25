@@ -1,0 +1,5 @@
+# 这个文件说明哪些本地生成内容不需要纳入版本管理。
+node_modules/
+dist/
+output/
+.vite/
