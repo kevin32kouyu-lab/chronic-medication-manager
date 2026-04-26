@@ -7,6 +7,7 @@ import {
   ensureTodayIntakeRecords,
   toggleIntakeRecord,
 } from "../src/lib/appState.js";
+import { buildPurchaseChecklist } from "../src/lib/careLoop.js";
 
 const baseState = {
   medications: [
@@ -60,6 +61,21 @@ describe("页面状态规则", () => {
     });
 
     expect(next.medications[0].stock).toBe(20);
+    expect(next.purchaseRecords).toHaveLength(1);
+  });
+
+  test("建议采购标记已购后会增加购药记录和药品库存", () => {
+    const [suggestion] = buildPurchaseChecklist(baseState.medications, "2026-04-25");
+    const next = addPurchaseToState(baseState, {
+      medicationId: suggestion.medicationId,
+      medicationName: suggestion.name,
+      quantity: suggestion.suggestedQuantity,
+      channel: "社区药房",
+      date: "2026-04-25",
+    });
+
+    expect(suggestion.suggestedQuantity).toBe(54);
+    expect(next.medications[0].stock).toBe(60);
     expect(next.purchaseRecords).toHaveLength(1);
   });
 

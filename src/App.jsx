@@ -9,12 +9,19 @@ import {
   toggleIntakeRecord,
   updateMedicationInState,
 } from "./lib/appState.js";
+import {
+  buildCareLoopSteps,
+  buildPurchaseChecklist,
+  buildRenewalPrep,
+  buildRenewalSummary,
+} from "./lib/careLoop.js";
 import { buildAiSummary, buildDashboardStats, buildRefillPlan, buildWeeklyAdherence } from "./lib/healthRules.js";
 import { hasSeenOnboarding, markOnboardingSeen } from "./lib/onboardingGuide.js";
 import { clearSavedState, loadSavedState, saveState } from "./lib/storage.js";
 import { createSampleData, getTodayKey } from "./data/sampleData.js";
 import { PageHeader, Sidebar, StatsGrid } from "./components/Shell.jsx";
 import { GuidedTour } from "./components/GuidedTour.jsx";
+import { CareLoopPanel, PurchaseChecklistPanel, RenewalPrepPanel } from "./components/ContinuityPanels.jsx";
 import {
   MedicationFormPanel,
   MedicationInventoryPanel,
@@ -50,6 +57,10 @@ export default function App() {
     () => buildAiSummary(state, today),
     [state, today]
   );
+  const careLoopSteps = useMemo(() => buildCareLoopSteps(state, today), [state, today]);
+  const purchaseChecklist = useMemo(() => buildPurchaseChecklist(state.medications, today), [state.medications, today]);
+  const renewalPrep = useMemo(() => buildRenewalPrep(state, today), [state, today]);
+  const renewalSummary = useMemo(() => buildRenewalSummary(state, today), [state, today]);
 
   useEffect(() => {
     saveState(state);
@@ -85,6 +96,19 @@ export default function App() {
     setState((current) => addPurchaseToState(current, form));
   }
 
+  // 把系统建议的补药清单标记为已购买，并复用购药入库规则。
+  function handleCompleteSuggestedPurchase(item) {
+    setState((current) =>
+      addPurchaseToState(current, {
+        medicationId: item.medicationId,
+        medicationName: item.name,
+        quantity: item.suggestedQuantity,
+        channel: "社区药房",
+        date: today,
+      })
+    );
+  }
+
   // 新增复诊记录。
   function handleAddReview(form) {
     setState((current) => addReviewToState(current, form));
@@ -114,10 +138,13 @@ export default function App() {
       <main className="main-content">
         <PageHeader patient={state.patient} today={today} onReset={handleResetDemo} onStartGuide={handleStartGuide} />
         <StatsGrid stats={dashboardStats} />
+        <CareLoopPanel steps={careLoopSteps} />
 
         <div className="content-grid">
           <TodayMedicationPanel records={todayRecords} medications={state.medications} onToggle={handleToggleIntake} />
           <AiSummaryPanel summary={aiSummary} />
+          <PurchaseChecklistPanel items={purchaseChecklist} onComplete={handleCompleteSuggestedPurchase} />
+          <RenewalPrepPanel prep={renewalPrep} summary={renewalSummary} />
           <MedicationInventoryPanel
             medications={state.medications}
             onEdit={setEditingMedication}

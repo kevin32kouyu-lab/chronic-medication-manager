@@ -32,8 +32,11 @@ describe("新用户功能指引配置", () => {
   test("步骤数量和顺序保持稳定", () => {
     expect(onboardingSteps.map((step) => step.id)).toEqual([
       "overview",
+      "care-loop",
       "today",
       "ai",
+      "purchase-checklist",
+      "renewal-prep",
       "medications",
       "refill",
       "review",

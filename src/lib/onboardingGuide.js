@@ -10,6 +10,12 @@ export const onboardingSteps = [
     selector: '[data-guide="overview"]',
   },
   {
+    id: "care-loop",
+    title: "连续服务闭环",
+    description: "这里把问诊、购药、用药、库存和续方串成一条线，帮助你判断当前卡在哪一步。",
+    selector: '[data-guide="care-loop"]',
+  },
+  {
     id: "today",
     title: "今日用药",
     description: "这里按时间列出当天要服用的药品。点击打卡后，完成数和药品库存会自动同步更新。",
@@ -20,6 +26,18 @@ export const onboardingSteps = [
     title: "智能健康摘要",
     description: "这里会根据库存、漏服和复诊时间生成简明提醒，帮助你快速判断补药和复诊优先级。",
     selector: '[data-guide="ai"]',
+  },
+  {
+    id: "purchase-checklist",
+    title: "补药采购清单",
+    description: "这里只列出 7 天内可能用完的药品，并给出建议购买日期和补足 30 天的数量。",
+    selector: '[data-guide="purchase-checklist"]',
+  },
+  {
+    id: "renewal-prep",
+    title: "续方准备",
+    description: "这里把复诊前要准备的用药记录、库存风险和漏服情况汇总起来，也能生成复诊摘要。",
+    selector: '[data-guide="renewal-prep"]',
   },
   {
     id: "medications",

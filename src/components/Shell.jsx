@@ -13,6 +13,7 @@ import { appBrand, buildPatientContext } from "../lib/brand.js";
 
 const navItems = [
   { href: "#overview", label: "总览", icon: ChartLineUp },
+  { href: "#care-loop", label: "服务闭环", icon: ClipboardText },
   { href: "#today", label: "今日用药", icon: Pill },
   { href: "#medications", label: "药品管理", icon: ClipboardText },
   { href: "#refill", label: "补药计划", icon: Basket },
