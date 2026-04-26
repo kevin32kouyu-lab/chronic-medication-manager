@@ -15,6 +15,7 @@ describe("三屏工作台导航配置", () => {
   });
 
   test("新手指引步骤会切换到对应屏幕", () => {
+    expect(getScreenForGuideStep("profile")).toBe("today");
     expect(getScreenForGuideStep("voice-assistant")).toBe("today");
     expect(getScreenForGuideStep("medications")).toBe("stock");
     expect(getScreenForGuideStep("adherence")).toBe("review");

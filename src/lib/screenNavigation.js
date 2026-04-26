@@ -14,12 +14,12 @@ const guideScreenMap = {
   today: "today",
   "voice-assistant": "today",
   ai: "today",
+  profile: "today",
   "purchase-checklist": "stock",
   medications: "stock",
   refill: "stock",
   purchase: "stock",
   "renewal-prep": "review",
-  profile: "review",
   review: "review",
   adherence: "review",
 };
