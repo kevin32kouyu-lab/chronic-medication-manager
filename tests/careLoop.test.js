@@ -11,7 +11,7 @@ import {
 const today = "2026-04-25";
 
 describe("连续服务闭环规则", () => {
-  test("闭环步骤顺序固定为问诊、购药、用药、库存、续方", () => {
+  test("从看病到续方步骤顺序固定", () => {
     const steps = buildCareLoopSteps(createSampleData(today), today);
 
     expect(steps.map((step) => step.id)).toEqual([
@@ -21,7 +21,7 @@ describe("连续服务闭环规则", () => {
       "stock",
       "renewal",
     ]);
-    expect(steps.map((step) => step.label)).toEqual(["问诊记录", "购药补药", "今日用药", "库存预警", "复诊续方"]);
+    expect(steps.map((step) => step.label)).toEqual(["看病记录", "买药补药", "今日吃药", "药量提醒", "复诊续方"]);
   });
 
   test("今日用药完成数、库存风险和复诊倒计时会进入闭环状态", () => {
@@ -32,11 +32,11 @@ describe("连续服务闭环规则", () => {
       detail: "今日 5/6 次已完成",
     });
     expect(steps.find((step) => step.id === "stock")).toMatchObject({
-      status: "库存预警",
+      status: "药快没了",
       detail: "2 种药少于 7 天",
     });
     expect(steps.find((step) => step.id === "renewal")).toMatchObject({
-      status: "准备续方",
+      status: "准备复诊",
       detail: "4 天后复诊",
     });
   });

@@ -20,7 +20,7 @@ const screenIcons = {
 // 渲染三屏顶部导航。
 export function ThreeScreenNav({ activeScreen, onScreenChange }) {
   return (
-    <nav className="screen-nav" data-guide="screen-nav" aria-label="三屏闭环导航">
+    <nav className="screen-nav" data-guide="screen-nav" aria-label="选择你要做的事">
       {screenDefinitions.map((screen) => {
         const Icon = screenIcons[screen.id];
         const isActive = activeScreen === screen.id;
@@ -72,7 +72,7 @@ export function MedicationTodayScreen({
       id="screen-today"
       eyebrow="第一屏"
       title="今日用药"
-      description="先看今日待办，再确认服药和当前风险。"
+      description="先确认今天有没有药没吃、有没有药快没了。"
     >
       <StatsGrid stats={dashboardStats} />
       <CareLoopPanel steps={careLoopSteps} />
@@ -104,7 +104,7 @@ export function StockRefillScreen({
       id="screen-stock"
       eyebrow="第二屏"
       title="库存补药"
-      description="把药品余量、采购建议和购药记录放在同一屏。"
+      description="查看药还够不够，需要买的药可以直接标记。"
     >
       <div className="screen-grid screen-grid-stock">
         <MedicationInventoryPanel medications={medications} onEdit={onEditMedication} onDelete={onDeleteMedication} />
@@ -133,7 +133,7 @@ export function ReviewProfileScreen({ renewalPrep, renewalSummary, nextReview, r
       id="screen-review"
       eyebrow="第三屏"
       title="复诊档案"
-      description="复诊前整理用药记录、漏服情况和续方准备。"
+      description="复诊前整理用药、漏服和库存情况。"
     >
       <div className="screen-grid screen-grid-review">
         <RenewalPrepPanel prep={renewalPrep} summary={renewalSummary} />
@@ -143,8 +143,8 @@ export function ReviewProfileScreen({ renewalPrep, renewalSummary, nextReview, r
           <div className="quiet-panel-icon">
             <ChartLineUp size={22} />
           </div>
-          <h3>记录会自动汇总到档案</h3>
-          <p>右上角的个人档案默认收起，需要查看个人病程、用药数量和复诊摘要时再展开。</p>
+          <h3>记录会自动放进档案</h3>
+          <p>需要查看个人信息、用药数量和复诊提醒时，打开右上角的个人档案即可。</p>
         </article>
       </div>
     </ScreenSection>

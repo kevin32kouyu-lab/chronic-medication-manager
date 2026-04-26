@@ -20,7 +20,7 @@ export function AiSummaryPanel({ summary }) {
 
   return (
     <section className="panel ai-panel" id="ai" data-guide="ai">
-      <SectionHeader title="AI 健康摘要" description="根据库存、漏服和复诊时间自动生成。" icon={Brain} />
+      <SectionHeader title="今日提醒" description="用几句话提醒今天最需要注意的事。" icon={Brain} />
       <div className="ai-signal">
         <Sparkle size={22} weight="fill" />
       </div>
@@ -59,7 +59,7 @@ export function ReviewPanel({ nextReview, reviewRecords, today, onAddReview }) {
 
   return (
     <section className="panel" id="review" data-guide="review">
-      <SectionHeader title="复诊管理" description="提前准备检查资料，避免复诊断档。" icon={CalendarCheck} />
+      <SectionHeader title="复诊管理" description="保存下次复诊时间和要带的资料。" icon={CalendarCheck} />
       {nextReview ? (
         <article className="review-card">
           <div>
@@ -73,7 +73,7 @@ export function ReviewPanel({ nextReview, reviewRecords, today, onAddReview }) {
           <strong>{status.daysLeft === null ? "无" : Math.max(0, status.daysLeft)}天</strong>
         </article>
       ) : (
-        <EmptyState title="暂无复诊安排" description="添加下一次复诊后，首页会自动显示倒计时。" />
+        <EmptyState title="还没有复诊安排" description="保存下次复诊时间后，首页会提醒你还剩几天。" />
       )}
 
       <form className="stack-form" onSubmit={handleSubmit}>
@@ -95,7 +95,7 @@ export function ReviewPanel({ nextReview, reviewRecords, today, onAddReview }) {
         </label>
         <button className="primary-button" type="submit">
           <FloppyDisk size={17} />
-          保存复诊
+          保存复诊安排
         </button>
       </form>
 
@@ -125,7 +125,7 @@ export function AdherencePanel({ intakeRecords, today, adherence }) {
 
   return (
     <section className="panel" data-guide="adherence">
-      <SectionHeader title="用药记录" description="查看近 7 天打卡和漏服情况。" icon={ChartBar} />
+      <SectionHeader title="最近服药情况" description="查看近 7 天有没有按时吃药。" icon={ChartBar} />
       <div className="adherence-score">
         <strong>{adherence.completionRate}%</strong>
         <span>
@@ -173,9 +173,9 @@ export function PurchasePanel({ medications, purchaseRecords, today, onAddPurcha
 
   return (
     <section className="panel" data-guide="purchase">
-      <SectionHeader title="购药记录" description="补药后自动增加库存。" icon={Basket} />
+      <SectionHeader title="购药记录" description="买药后保存一下，库存会一起更新。" icon={Basket} />
       {medications.length === 0 ? (
-        <EmptyState title="暂无可购药品" description="先新增药品，再记录购买数量。" />
+        <EmptyState title="还没有可记录的药品" description="先添加药品，再保存买药数量。" />
       ) : (
         <form className="stack-form" onSubmit={handleSubmit}>
           <label>
@@ -204,7 +204,7 @@ export function PurchasePanel({ medications, purchaseRecords, today, onAddPurcha
           </label>
           <button className="primary-button" type="submit">
             <FloppyDisk size={17} />
-            记录购药
+            保存购药记录
           </button>
         </form>
       )}

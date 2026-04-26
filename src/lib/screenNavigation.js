@@ -1,8 +1,8 @@
 // 这个文件集中管理三屏工作台的屏幕顺序，以及新手指引和屏幕之间的对应关系。
 export const screenDefinitions = [
-  { id: "today", label: "今日用药", description: "先确认今天要做的事" },
-  { id: "stock", label: "库存补药", description: "查看药够不够" },
-  { id: "review", label: "复诊档案", description: "整理续方资料" },
+  { id: "today", label: "今日用药", description: "看今天要不要吃药" },
+  { id: "stock", label: "库存补药", description: "看哪些药快没了" },
+  { id: "review", label: "复诊档案", description: "看复诊前要准备什么" },
 ];
 
 const defaultScreenId = "today";

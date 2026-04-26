@@ -17,30 +17,30 @@ export function buildCareLoopSteps(state, today) {
   return [
     {
       id: "consultation",
-      label: "问诊记录",
+      label: "看病记录",
       status: lastReview ? "已记录" : "待补充",
-      detail: lastReview ? `${Math.abs(diffDays(lastReview.date, today))} 天前完成复诊` : "补充最近一次问诊信息",
+      detail: lastReview ? `${Math.abs(diffDays(lastReview.date, today))} 天前看过医生` : "补充最近一次看病信息",
       tone: lastReview ? "stable" : "warning",
     },
     {
       id: "purchase",
-      label: "购药补药",
-      status: purchaseChecklist.length > 0 ? "待补药" : "已覆盖",
+      label: "买药补药",
+      status: purchaseChecklist.length > 0 ? "待补药" : "暂时够用",
       detail:
         purchaseChecklist.length > 0 ? `${purchaseChecklist.length} 种药建议补药` : "近期暂无补药压力",
       tone: purchaseChecklist.length > 0 ? "warning" : "stable",
     },
     {
       id: "medication",
-      label: "今日用药",
+      label: "今日吃药",
       status: todayRecords.length > 0 && completedToday === todayRecords.length ? "已完成" : "进行中",
       detail: `今日 ${completedToday}/${todayRecords.length} 次已完成`,
       tone: todayRecords.length > 0 && completedToday === todayRecords.length ? "stable" : "blue",
     },
     {
       id: "stock",
-      label: "库存预警",
-      status: purchaseChecklist.length > 0 ? "库存预警" : "库存充足",
+      label: "药量提醒",
+      status: purchaseChecklist.length > 0 ? "药快没了" : "药量充足",
       detail:
         purchaseChecklist.length > 0 ? `${purchaseChecklist.length} 种药少于 7 天` : "所有药品余量充足",
       tone: purchaseChecklist.some((item) => item.remainingDays <= 3)
@@ -99,25 +99,25 @@ export function buildRenewalPrep(state, today) {
     items: [
       {
         id: "records",
-        title: "整理近 7 天用药记录",
+        title: "看看最近 7 天有没有漏服",
         detail: `完成率 ${adherence.completionRate}%，漏服 ${adherence.missed} 次。`,
         tone: adherence.missed > 2 ? "warning" : "stable",
       },
       {
         id: "stock",
-        title: "确认库存风险药品",
+        title: "确认哪些药快没了",
         detail: riskNames,
         tone: riskMedications.length > 0 ? "warning" : "stable",
       },
       {
         id: "medicine-list",
-        title: "准备当前用药清单",
+        title: "带上正在吃的药清单",
         detail: medicationNames,
         tone: "stable",
       },
       {
         id: "review-materials",
-        title: "准备复诊资料",
+        title: "准备检查资料和问题",
         detail: state.nextReview?.notes || "携带近期检查结果、用药记录和想咨询的问题。",
         tone: reviewStatus.daysLeft !== null && reviewStatus.daysLeft <= 7 ? "warning" : "stable",
       },
@@ -141,7 +141,7 @@ export function buildRenewalSummary(state, today) {
     `库存风险：${riskNames}。`,
     `近 7 天用药完成率 ${prep.adherence.completionRate}%，漏服 ${prep.adherence.missed} 次。`,
     `准备事项：${review?.notes || "携带近期检查结果和用药记录。"}。`,
-    "以上内容仅用于复诊前整理，不替代医生诊断。",
+    "仅供复诊前整理，不替代医生建议。",
   ].join("\n");
 }
 
@@ -156,7 +156,7 @@ function getLatestPastReview(reviewRecords = [], today) {
 function getRenewalStatusLabel(reviewStatus) {
   if (reviewStatus.daysLeft === null) return "待安排";
   if (reviewStatus.daysLeft < 0) return "复诊逾期";
-  if (reviewStatus.daysLeft <= 7) return "准备续方";
+  if (reviewStatus.daysLeft <= 7) return "准备复诊";
   return "计划中";
 }
 

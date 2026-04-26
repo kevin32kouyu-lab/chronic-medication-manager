@@ -152,7 +152,7 @@ export function buildAiSummary(data, today) {
     lines.push(`下次复诊已安排在 ${data.nextReview.date}，当前主要关注药品余量和打卡完成率。`);
   }
 
-  lines.push("以上内容仅用于用药计划和复诊提醒，不替代医生诊断。");
+  lines.push("仅供用药提醒，不替代医生建议。");
 
   return lines.join(" ");
 }

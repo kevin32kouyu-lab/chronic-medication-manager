@@ -41,9 +41,9 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
 
   return (
     <section className="panel panel-large" id="today" data-guide="today">
-      <SectionHeader title="今日用药" description="按时间确认服药，打卡后会同步扣减库存。" icon={Pill} />
+      <SectionHeader title="今日用药" description="按时间看今天该吃什么，吃完后点一下。" icon={Pill} />
       {todayRecords.length === 0 ? (
-        <EmptyState title="今天还没有用药计划" description="新增药品后，系统会自动生成今日用药。" />
+        <EmptyState title="今天还没有要吃的药" description="添加药品后，这里会显示今天要吃的药。" />
       ) : (
         <div className="dose-list">
           {todayRecords.map((record, index) => (
@@ -67,7 +67,7 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
               </div>
               <button className="primary-button compact" type="button" onClick={() => onToggle(record.id)}>
                 <CheckCircle size={17} weight={record.completed ? "fill" : "regular"} />
-                {record.completed ? "已服用" : "标记服用"}
+                {record.completed ? "已服用" : "我已服用"}
               </button>
             </article>
           ))}
@@ -81,9 +81,9 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
 export function MedicationInventoryPanel({ medications, onEdit, onDelete }) {
   return (
     <section className="panel" id="medications" data-guide="medications">
-      <SectionHeader title="药品管理" description="库存低于 7 天会进入补药提醒。" icon={Pill} />
+      <SectionHeader title="药品管理" description="查看每种药还剩多少，也可以编辑用药信息。" icon={Pill} />
       {medications.length === 0 ? (
-        <EmptyState title="还没有药品" description="先添加药品，页面会生成用药和补药计划。" />
+        <EmptyState title="还没有添加药品" description="先添加一种药，页面就会显示今天要吃什么、什么时候补药。" />
       ) : (
         <div className="inventory-list">
           {medications.map((medication, index) => {
@@ -125,9 +125,9 @@ export function MedicationInventoryPanel({ medications, onEdit, onDelete }) {
 export function RefillPlanPanel({ refillPlan }) {
   return (
     <section className="panel" id="refill" data-guide="refill">
-      <SectionHeader title="补药计划" description="按预计用完时间自动排序。" icon={Basket} />
+      <SectionHeader title="补药计划" description="按快用完的顺序排列，方便先处理紧急的药。" icon={Basket} />
       {refillPlan.length === 0 ? (
-        <EmptyState title="暂无补药任务" description="添加药品库存后，会自动计算补药日期。" />
+        <EmptyState title="暂时没有补药提醒" description="添加药品库存后，这里会提醒什么时候该买药。" />
       ) : (
         <div className="refill-list">
           {refillPlan.map((item, index) => (

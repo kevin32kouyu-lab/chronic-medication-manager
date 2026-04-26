@@ -7,6 +7,14 @@ describe("三屏工作台导航配置", () => {
     expect(screenDefinitions.map((screen) => screen.id)).toEqual(["today", "stock", "review"]);
   });
 
+  test("三屏说明直接告诉用户要做什么", () => {
+    expect(screenDefinitions.map((screen) => screen.description)).toEqual([
+      "看今天要不要吃药",
+      "看哪些药快没了",
+      "看复诊前要准备什么",
+    ]);
+  });
+
   test("每个屏幕使用屏幕 id 而不是锚点 href", () => {
     screenDefinitions.forEach((screen) => {
       expect(screen.id).toBeTruthy();

@@ -108,5 +108,6 @@ describe("慢病用药规则", () => {
     expect(summary).toContain("硝苯地平控释片预计 3 天后用完");
     expect(summary).toContain("近 7 天有 3 次漏服");
     expect(summary).toContain("4 天后需要到华东社区医院心内科复诊");
+    expect(summary).toContain("仅供用药提醒，不替代医生建议");
   });
 });

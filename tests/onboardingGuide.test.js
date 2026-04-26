@@ -48,6 +48,25 @@ describe("新用户功能指引配置", () => {
     ]);
   });
 
+  test("步骤标题使用更容易理解的日常表达", () => {
+    expect(onboardingSteps.map((step) => step.title)).toEqual([
+      "个人档案",
+      "选择你要做的事",
+      "今天要关注什么",
+      "从看病到续方",
+      "今日用药",
+      "今日提醒",
+      "AI 语音助手",
+      "药品管理",
+      "补药计划",
+      "需要补的药",
+      "购药记录",
+      "复诊前准备",
+      "复诊管理",
+      "最近服药情况",
+    ]);
+  });
+
   test("每一步都有标题、说明和目标区域选择器", () => {
     onboardingSteps.forEach((step) => {
       expect(step.title).toBeTruthy();

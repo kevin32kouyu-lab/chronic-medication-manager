@@ -179,16 +179,16 @@ export function GuidedTour({ isOpen, onClose, onFinish, onStepChange }) {
             <Info size={17} weight="fill" />
             新用户指引
           </span>
-          <h2 id="tour-welcome-title">先认识一下{appBrand.name}</h2>
+          <h2 id="tour-welcome-title">先看看今天怎么管理用药</h2>
           <p>
-            这个页面把今日用药、药品库存、补药计划、复诊提醒和健康摘要放在一起，帮助你围绕“不漏服、不断药、不忘复诊”管理日常用药。
+            你可以先确认今天该吃什么药，再看看哪些药快没了，最后整理复诊前要准备的内容。
           </p>
           <div className="tour-actions">
             <button className="ghost-button" type="button" onClick={finishGuide}>
-              暂时跳过
+              先自己看看
             </button>
             <button className="primary-button" type="button" onClick={startTour}>
-              开始了解
+              开始引导
               <ArrowRight size={17} />
             </button>
           </div>

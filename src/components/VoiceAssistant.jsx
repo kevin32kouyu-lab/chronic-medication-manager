@@ -62,7 +62,7 @@ export function VoiceAssistant({ state, today, onConfirm }) {
   function handleConfirm() {
     if (!result?.ok || !result.action) return;
     onConfirm(result.action);
-    setStatus("已确认记录，页面数据已同步更新。");
+    setStatus("已保存，这条记录已同步到页面。");
     setResult(null);
     setInput("");
   }
@@ -77,8 +77,8 @@ export function VoiceAssistant({ state, today, onConfirm }) {
                 <Sparkle size={15} weight="fill" />
                 药时助手
               </span>
-              <h3>用一句话记录用药变化</h3>
-              <p>可记录服药、购药、新增药品和复诊，确认后才会写入。</p>
+              <h3>说一句话，帮你记下来</h3>
+              <p>比如“我刚吃了二甲双胍”或“我买了降压药”，确认后才会保存。</p>
             </div>
             <button type="button" aria-label="关闭药时助手" onClick={() => setIsOpen(false)}>
               <X size={18} />
@@ -105,7 +105,7 @@ export function VoiceAssistant({ state, today, onConfirm }) {
           </form>
 
           <div className="assistant-examples">
-            <span>模拟语音样例</span>
+            <span>可以试试这样说</span>
             {VOICE_EXAMPLES.map((example) => (
               <button type="button" key={example.id} onClick={() => handleTranscript(example.text)}>
                 {example.text}
@@ -144,7 +144,7 @@ export function VoiceAssistant({ state, today, onConfirm }) {
 function AssistantPendingCard({ result, onConfirm, onCancel }) {
   return (
     <article className="assistant-pending-card">
-      <span>待确认记录</span>
+      <span>请确认这条记录</span>
       <h4>{getIntentLabel(result.intent)}</h4>
       <p>{result.message}</p>
       <dl>
@@ -161,7 +161,7 @@ function AssistantPendingCard({ result, onConfirm, onCancel }) {
         </button>
         <button className="primary-button" type="button" onClick={onConfirm}>
           <CheckCircle size={17} />
-          确认记录
+          确认保存
         </button>
       </div>
     </article>

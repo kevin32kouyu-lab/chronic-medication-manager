@@ -15,10 +15,10 @@ import { EmptyState, SectionHeader, StatusPill } from "./Shell.jsx";
 // 展示问诊到续方的横向闭环进度。
 export function CareLoopPanel({ steps }) {
   return (
-    <section className="panel care-loop-panel" id="care-loop" data-guide="care-loop" aria-label="连续服务闭环">
+    <section className="panel care-loop-panel" id="care-loop" data-guide="care-loop" aria-label="从看病到续方">
       <SectionHeader
-        title="连续服务闭环"
-        description="把问诊、购药、用药、库存和续方串成一条线。"
+        title="从看病到续方"
+        description="按看病、买药、吃药、补药、复诊的顺序看当前进度。"
         icon={ClipboardText}
       />
       <div className="care-loop-list">
@@ -42,9 +42,9 @@ export function CareLoopPanel({ steps }) {
 export function PurchaseChecklistPanel({ items, onComplete }) {
   return (
     <section className="panel purchase-checklist-panel" id="purchase-checklist" data-guide="purchase-checklist">
-      <SectionHeader title="补药采购清单" description="只列出 7 天内可能用完的药品。" icon={Basket} />
+      <SectionHeader title="需要补的药" description="只提醒快吃完、需要优先购买的药。" icon={Basket} />
       {items.length === 0 ? (
-        <EmptyState title="暂无待采购药品" description="库存充足时，补药清单会自动清空。" />
+        <EmptyState title="目前不用补药" description="等有药快吃完时，这里会提醒你。" />
       ) : (
         <div className="purchase-checklist-list">
           {items.map((item, index) => (
@@ -67,7 +67,7 @@ export function PurchaseChecklistPanel({ items, onComplete }) {
               </div>
               <button className="primary-button compact" type="button" onClick={() => onComplete(item)}>
                 <CheckCircle size={17} />
-                标记已购
+                我已经买了
               </button>
             </article>
           ))}
@@ -89,7 +89,7 @@ export function RenewalPrepPanel({ prep, summary }) {
 
   return (
     <section className="panel renewal-prep-panel" id="renewal-prep" data-guide="renewal-prep">
-      <SectionHeader title="续方准备" description="复诊前整理用药记录、库存风险和漏服情况。" icon={CalendarCheck} />
+      <SectionHeader title="复诊前准备" description="提前整理要给医生看的用药情况。" icon={CalendarCheck} />
       <div className={`renewal-status-card status-${prep.status.tone}`}>
         <div>
           <span>复诊状态</span>
@@ -121,7 +121,7 @@ export function RenewalPrepPanel({ prep, summary }) {
 
       <button className="ghost-button summary-button" type="button" onClick={() => setIsSummaryOpen(true)}>
         <FileText size={17} />
-        生成复诊摘要
+        整理给医生看的摘要
       </button>
 
       {isSummaryOpen ? (
@@ -130,7 +130,7 @@ export function RenewalPrepPanel({ prep, summary }) {
             <div className="summary-modal-header">
               <div>
                 <span>复诊摘要</span>
-                <h4>给医生沟通前的整理</h4>
+                <h4>复诊时可以直接给医生看</h4>
               </div>
               <button type="button" aria-label="关闭复诊摘要" onClick={() => setIsSummaryOpen(false)}>
                 <X size={18} />

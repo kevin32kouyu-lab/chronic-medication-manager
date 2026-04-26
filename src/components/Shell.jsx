@@ -92,7 +92,7 @@ export function StatsGrid({ stats }) {
   ];
 
   return (
-    <section className="stats-grid" id="overview" data-guide="overview" aria-label="总览仪表盘">
+    <section className="stats-grid" id="overview" data-guide="overview" aria-label="今天要关注什么">
       {cards.map((card, index) => (
         <article className={`stat-card tone-${card.tone}`} key={card.label} style={{ "--item-index": index }}>
           <span>{card.label}</span>
