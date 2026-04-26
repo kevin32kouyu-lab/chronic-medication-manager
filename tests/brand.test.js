@@ -5,7 +5,7 @@ import { appBrand, buildPatientContext } from "../src/lib/brand.js";
 describe("产品品牌", () => {
   test("首页使用产品名作为主标题", () => {
     expect(appBrand.name).toBe("药时管家");
-    expect(appBrand.tagline).toBe("用药、补药、复诊一屏掌握");
+    expect(appBrand.tagline).toBe("用药、补药、复诊三屏协同");
   });
 
   test("患者信息作为辅助上下文展示", () => {

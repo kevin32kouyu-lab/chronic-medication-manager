@@ -3,7 +3,7 @@
 export const appBrand = {
   name: "药时管家",
   category: "慢病管理",
-  tagline: "用药、补药、复诊一屏掌握",
+  tagline: "用药、补药、复诊三屏协同",
   description: "围绕按时用药、及时补药、按期复诊，持续跟踪个人用药计划。",
 };
 
