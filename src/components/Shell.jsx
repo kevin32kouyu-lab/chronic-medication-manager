@@ -51,7 +51,7 @@ export function Sidebar() {
 export function PageHeader({ patient, today, onReset, onStartGuide }) {
   return (
     <header className="page-header">
-      <div>
+      <div className="header-main">
         <p className="eyebrow">今日日期 {today}</p>
         <h2>{patient.name}的慢病用药工作台</h2>
         <p className="header-copy">围绕吃药、补药、复诊三件事，持续跟踪个人用药计划。</p>
@@ -92,8 +92,8 @@ export function StatsGrid({ stats }) {
 
   return (
     <section className="stats-grid" id="overview" data-guide="overview" aria-label="总览仪表盘">
-      {cards.map((card) => (
-        <article className={`stat-card tone-${card.tone}`} key={card.label}>
+      {cards.map((card, index) => (
+        <article className={`stat-card tone-${card.tone}`} key={card.label} style={{ "--item-index": index }}>
           <span>{card.label}</span>
           <strong>
             {card.value}

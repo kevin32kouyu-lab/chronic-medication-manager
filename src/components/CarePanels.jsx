@@ -25,8 +25,10 @@ export function AiSummaryPanel({ summary }) {
         <Sparkle size={22} weight="fill" />
       </div>
       <div className="summary-list">
-        {lines.map((line) => (
-          <p key={line}>{line}。</p>
+        {lines.map((line, index) => (
+          <p key={line} style={{ "--item-index": index }}>
+            {line}。
+          </p>
         ))}
       </div>
     </section>
@@ -98,8 +100,8 @@ export function ReviewPanel({ nextReview, reviewRecords, today, onAddReview }) {
       </form>
 
       <div className="history-list">
-        {reviewRecords.slice(0, 3).map((record) => (
-          <div className="history-row" key={record.id}>
+        {reviewRecords.slice(0, 3).map((record, index) => (
+          <div className="history-row" key={record.id} style={{ "--item-index": index }}>
             <span>{record.date}</span>
             <p>
               {record.hospital} · {record.department}
@@ -131,8 +133,8 @@ export function AdherencePanel({ intakeRecords, today, adherence }) {
         </span>
       </div>
       <div className="bar-chart" aria-label="近 7 天用药完成率">
-        {days.map((day) => (
-          <div className="bar-item" key={day.date}>
+        {days.map((day, index) => (
+          <div className="bar-item" key={day.date} style={{ "--item-index": index }}>
             <div className="bar-track">
               <span style={{ height: `${Math.max(day.rate, 6)}%` }} />
             </div>
@@ -207,8 +209,8 @@ export function PurchasePanel({ medications, purchaseRecords, today, onAddPurcha
         </form>
       )}
       <div className="history-list">
-        {purchaseRecords.slice(0, 4).map((record) => (
-          <div className="history-row" key={record.id}>
+        {purchaseRecords.slice(0, 4).map((record, index) => (
+          <div className="history-row" key={record.id} style={{ "--item-index": index }}>
             <span>{record.date}</span>
             <p>
               {record.medicationName} · {record.quantity} 份 · {record.channel}

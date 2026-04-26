@@ -46,8 +46,12 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
         <EmptyState title="今天还没有用药计划" description="新增药品后，系统会自动生成今日用药。" />
       ) : (
         <div className="dose-list">
-          {todayRecords.map((record) => (
-            <article className={`dose-row ${record.completed ? "is-done" : ""}`} key={record.id}>
+          {todayRecords.map((record, index) => (
+            <article
+              className={`dose-row ${record.completed ? "is-done" : ""}`}
+              key={record.id}
+              style={{ "--item-index": index }}
+            >
               <div className="time-block">
                 <Clock size={17} />
                 <strong>{record.time}</strong>
@@ -82,10 +86,10 @@ export function MedicationInventoryPanel({ medications, onEdit, onDelete }) {
         <EmptyState title="还没有药品" description="先添加药品，页面会生成用药和补药计划。" />
       ) : (
         <div className="inventory-list">
-          {medications.map((medication) => {
+          {medications.map((medication, index) => {
             const risk = getMedicationRisk(medication);
             return (
-              <article className="inventory-row" key={medication.id}>
+              <article className="inventory-row" key={medication.id} style={{ "--item-index": index }}>
                 <div>
                   <h4>{medication.name}</h4>
                   <p>
@@ -126,8 +130,8 @@ export function RefillPlanPanel({ refillPlan }) {
         <EmptyState title="暂无补药任务" description="添加药品库存后，会自动计算补药日期。" />
       ) : (
         <div className="refill-list">
-          {refillPlan.map((item) => (
-            <article className="refill-row" key={item.id}>
+          {refillPlan.map((item, index) => (
+            <article className="refill-row" key={item.id} style={{ "--item-index": index }}>
               <div>
                 <StatusPill tone={item.priority === "紧急" ? "danger" : item.priority === "高" ? "warning" : "stable"}>
                   {item.priority}优先级
