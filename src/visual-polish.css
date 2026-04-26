@@ -52,18 +52,90 @@ select {
 }
 
 .brand-mark {
+  position: relative;
+  overflow: hidden;
   width: 44px;
   height: 44px;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background:
+    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.32), transparent 30%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(175, 224, 205, 0.12));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 12px 28px rgba(6, 31, 26, 0.18);
 }
 
+.brand-mark::after {
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  content: "";
+}
+
+.brand-symbol {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+.brand-symbol-pill {
+  top: 12px;
+  left: 9px;
+  width: 25px;
+  height: 13px;
+  border-radius: 999px;
+  background: #f7fffb;
+  box-shadow: 0 5px 12px rgba(6, 31, 26, 0.16);
+  transform: rotate(-34deg);
+}
+
+.brand-symbol-pill::after {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  left: 50%;
+  width: 1px;
+  background: rgba(35, 116, 89, 0.38);
+  content: "";
+}
+
+.brand-symbol-clock {
+  right: 9px;
+  bottom: 8px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #dff6ed;
+  border-radius: 50%;
+  background: rgba(23, 61, 49, 0.84);
+  box-shadow: 0 6px 14px rgba(6, 31, 26, 0.2);
+}
+
+.brand-symbol-clock::before,
+.brand-symbol-clock::after {
+  position: absolute;
+  top: 7px;
+  left: 7px;
+  width: 6px;
+  height: 2px;
+  border-radius: 999px;
+  background: #dff6ed;
+  content: "";
+  transform-origin: 1px 50%;
+}
+
+.brand-symbol-clock::before {
+  transform: rotate(-90deg);
+}
+
+.brand-symbol-clock::after {
+  transform: rotate(0deg);
+}
+
 .sidebar h1 {
-  max-width: 150px;
-  font-size: 24px;
+  max-width: 160px;
+  font-size: 26px;
   font-weight: 850;
 }
 
@@ -185,6 +257,12 @@ select {
   color: #1f604b;
   border-color: rgba(35, 116, 89, 0.12);
   background: rgba(231, 244, 239, 0.92);
+}
+
+.patient-tag {
+  color: #354659;
+  border-color: rgba(53, 70, 89, 0.1);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .stats-grid {

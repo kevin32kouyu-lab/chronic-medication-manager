@@ -1,6 +1,7 @@
 // 这个组件负责首次进入时的新用户指引，和 onboardingGuide 配置配合使用。
 import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle, Info, X } from "@phosphor-icons/react";
+import { appBrand } from "../lib/brand.js";
 import { onboardingSteps } from "../lib/onboardingGuide.js";
 
 const highlightPadding = 8;
@@ -177,7 +178,7 @@ export function GuidedTour({ isOpen, onClose, onFinish }) {
             <Info size={17} weight="fill" />
             新用户指引
           </span>
-          <h2 id="tour-welcome-title">先认识一下慢病用药小管家</h2>
+          <h2 id="tour-welcome-title">先认识一下{appBrand.name}</h2>
           <p>
             这个页面把今日用药、药品库存、补药计划、复诊提醒和健康摘要放在一起，帮助你围绕“不漏服、不断药、不忘复诊”管理日常用药。
           </p>

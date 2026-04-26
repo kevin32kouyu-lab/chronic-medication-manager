@@ -14,6 +14,7 @@
 - `src/lib/appState.js`：处理打卡、购药、新增药品、编辑药品、删除药品和新增复诊。
 - `src/lib/storage.js`：封装浏览器本地保存、读取和清空。
 - `src/lib/onboardingGuide.js`：定义新用户指引步骤和是否看过指引的本地记录。
+- `src/lib/brand.js`：集中管理产品名称、首页品牌文案和患者上下文展示。
 - `src/components/Shell.jsx`：提供侧边栏、页面头部、总览卡片和通用空状态。
 - `src/components/GuidedTour.jsx`：渲染欢迎弹窗、分步提示、高亮框和指引操作按钮。
 - `src/components/MedicationPanels.jsx`：展示今日用药、药品管理、补药计划和药品表单。

@@ -5,11 +5,11 @@ import {
   CalendarCheck,
   ChartLineUp,
   ClipboardText,
-  Heartbeat,
   Info,
   Pill,
   WarningCircle,
 } from "@phosphor-icons/react";
+import { appBrand, buildPatientContext } from "../lib/brand.js";
 
 const navItems = [
   { href: "#overview", label: "总览", icon: ChartLineUp },
@@ -24,12 +24,13 @@ const navItems = [
 export function Sidebar() {
   return (
     <aside className="sidebar" aria-label="主导航">
-      <div className="brand-mark">
-        <Heartbeat size={24} weight="fill" />
+      <div className="brand-mark" aria-hidden="true">
+        <span className="brand-symbol brand-symbol-pill" />
+        <span className="brand-symbol brand-symbol-clock" />
       </div>
       <div>
-        <p className="eyebrow">慢病管理</p>
-        <h1>用药小管家</h1>
+        <p className="eyebrow">{appBrand.category}</p>
+        <h1>{appBrand.name}</h1>
       </div>
       <nav className="nav-list">
         {navItems.map((item) => {
@@ -42,7 +43,7 @@ export function Sidebar() {
           );
         })}
       </nav>
-      <p className="sidebar-note">个人用药计划、复诊和补药提醒集中管理。</p>
+      <p className="sidebar-note">{appBrand.description}</p>
     </aside>
   );
 }
@@ -53,9 +54,10 @@ export function PageHeader({ patient, today, onReset, onStartGuide }) {
     <header className="page-header">
       <div className="header-main">
         <p className="eyebrow">今日日期 {today}</p>
-        <h2>{patient.name}的慢病用药工作台</h2>
-        <p className="header-copy">围绕吃药、补药、复诊三件事，持续跟踪个人用药计划。</p>
+        <h2>{appBrand.name}</h2>
+        <p className="header-copy">{appBrand.tagline}</p>
         <div className="tag-row">
+          <span className="tag patient-tag">{buildPatientContext(patient)}</span>
           {patient.tags.map((tag) => (
             <span className="tag" key={tag}>
               {tag}
