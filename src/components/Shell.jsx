@@ -6,6 +6,7 @@ import {
   ChartLineUp,
   ClipboardText,
   Heartbeat,
+  Info,
   Pill,
   WarningCircle,
 } from "@phosphor-icons/react";
@@ -47,7 +48,7 @@ export function Sidebar() {
 }
 
 // 渲染页面顶部说明和操作。
-export function PageHeader({ patient, today, onReset }) {
+export function PageHeader({ patient, today, onReset, onStartGuide }) {
   return (
     <header className="page-header">
       <div>
@@ -62,9 +63,15 @@ export function PageHeader({ patient, today, onReset }) {
           ))}
         </div>
       </div>
-      <button className="ghost-button" type="button" onClick={onReset}>
-        重置演示数据
-      </button>
+      <div className="header-actions">
+        <button className="ghost-button" type="button" onClick={onStartGuide}>
+          <Info size={17} />
+          查看指引
+        </button>
+        <button className="ghost-button" type="button" onClick={onReset}>
+          重置演示数据
+        </button>
+      </div>
     </header>
   );
 }
@@ -84,7 +91,7 @@ export function StatsGrid({ stats }) {
   ];
 
   return (
-    <section className="stats-grid" id="overview" aria-label="总览仪表盘">
+    <section className="stats-grid" id="overview" data-guide="overview" aria-label="总览仪表盘">
       {cards.map((card) => (
         <article className={`stat-card tone-${card.tone}`} key={card.label}>
           <span>{card.label}</span>

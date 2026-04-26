@@ -1,0 +1,78 @@
+// 这个文件集中管理新用户功能指引的步骤和本地保存状态。
+
+export const ONBOARDING_STORAGE_KEY = "chronic-medication-manager-onboarding-v1";
+
+export const onboardingSteps = [
+  {
+    id: "overview",
+    title: "总览仪表盘",
+    description: "这里集中显示今日待办、已完成用药、库存风险和复诊倒计时，打开页面后先看这一排就能判断今天最重要的事。",
+    selector: '[data-guide="overview"]',
+  },
+  {
+    id: "today",
+    title: "今日用药",
+    description: "这里按时间列出当天要服用的药品。点击打卡后，完成数和药品库存会自动同步更新。",
+    selector: '[data-guide="today"]',
+  },
+  {
+    id: "ai",
+    title: "智能健康摘要",
+    description: "这里会根据库存、漏服和复诊时间生成简明提醒，帮助你快速判断补药和复诊优先级。",
+    selector: '[data-guide="ai"]',
+  },
+  {
+    id: "medications",
+    title: "药品管理",
+    description: "这里维护每种药的用途、剂量、每日用量和当前库存，是补药计划和今日用药的基础。",
+    selector: '[data-guide="medications"]',
+  },
+  {
+    id: "refill",
+    title: "补药计划",
+    description: "这里会按库存和每日用量自动计算还能吃几天，并把快用完的药品排在前面。",
+    selector: '[data-guide="refill"]',
+  },
+  {
+    id: "review",
+    title: "复诊管理",
+    description: "这里记录下一次复诊时间、医院科室和准备事项，临近或逾期时会在总览中提醒。",
+    selector: '[data-guide="review"]',
+  },
+  {
+    id: "adherence",
+    title: "用药记录",
+    description: "这里展示近 7 天服药完成率和漏服次数，方便回看最近的执行情况。",
+    selector: '[data-guide="adherence"]',
+  },
+  {
+    id: "purchase",
+    title: "购药记录",
+    description: "这里记录每次补药的数量和渠道，提交后会自动增加对应药品库存。",
+    selector: '[data-guide="purchase"]',
+  },
+];
+
+// 判断用户是否已经看过新手指引。
+export function hasSeenOnboarding(storage = getDefaultStorage()) {
+  if (!storage) return false;
+  return storage.getItem(ONBOARDING_STORAGE_KEY) === "seen";
+}
+
+// 标记用户已经完成或跳过新手指引。
+export function markOnboardingSeen(storage = getDefaultStorage()) {
+  if (!storage) return;
+  storage.setItem(ONBOARDING_STORAGE_KEY, "seen");
+}
+
+// 清除新手指引状态，便于手动重新展示或测试。
+export function resetOnboardingSeen(storage = getDefaultStorage()) {
+  if (!storage) return;
+  storage.removeItem(ONBOARDING_STORAGE_KEY);
+}
+
+// 获取浏览器本地存储；不可用时返回空值。
+function getDefaultStorage() {
+  if (typeof window === "undefined") return null;
+  return window.localStorage;
+}

@@ -159,6 +159,13 @@ a {
   letter-spacing: 0;
 }
 
+.header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .header-copy {
   margin: 14px 0 0;
   max-width: 620px;
@@ -712,6 +719,11 @@ select:focus {
   .page-header,
   .adherence-score {
     display: grid;
+  }
+
+  .header-actions {
+    display: grid;
+    justify-content: stretch;
   }
 
   .stats-grid,

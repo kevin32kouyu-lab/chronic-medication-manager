@@ -19,7 +19,7 @@ export function AiSummaryPanel({ summary }) {
     .filter(Boolean);
 
   return (
-    <section className="panel ai-panel" id="ai">
+    <section className="panel ai-panel" id="ai" data-guide="ai">
       <SectionHeader title="AI 健康摘要" description="根据库存、漏服和复诊时间自动生成。" icon={Brain} />
       <div className="ai-signal">
         <Sparkle size={22} weight="fill" />
@@ -56,7 +56,7 @@ export function ReviewPanel({ nextReview, reviewRecords, today, onAddReview }) {
   }
 
   return (
-    <section className="panel" id="review">
+    <section className="panel" id="review" data-guide="review">
       <SectionHeader title="复诊管理" description="提前准备检查资料，避免复诊断档。" icon={CalendarCheck} />
       {nextReview ? (
         <article className="review-card">
@@ -122,7 +122,7 @@ export function AdherencePanel({ intakeRecords, today, adherence }) {
   });
 
   return (
-    <section className="panel">
+    <section className="panel" data-guide="adherence">
       <SectionHeader title="用药记录" description="查看近 7 天打卡和漏服情况。" icon={ChartBar} />
       <div className="adherence-score">
         <strong>{adherence.completionRate}%</strong>
@@ -170,7 +170,7 @@ export function PurchasePanel({ medications, purchaseRecords, today, onAddPurcha
   }
 
   return (
-    <section className="panel">
+    <section className="panel" data-guide="purchase">
       <SectionHeader title="购药记录" description="补药后自动增加库存。" icon={Basket} />
       {medications.length === 0 ? (
         <EmptyState title="暂无可购药品" description="先新增药品，再记录购买数量。" />

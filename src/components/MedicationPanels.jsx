@@ -40,7 +40,7 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
     .sort((a, b) => a.time.localeCompare(b.time));
 
   return (
-    <section className="panel panel-large" id="today">
+    <section className="panel panel-large" id="today" data-guide="today">
       <SectionHeader title="今日用药" description="按时间确认服药，打卡后会同步扣减库存。" icon={Pill} />
       {todayRecords.length === 0 ? (
         <EmptyState title="今天还没有用药计划" description="新增药品后，系统会自动生成今日用药。" />
@@ -76,7 +76,7 @@ export function TodayMedicationPanel({ records, medications, onToggle }) {
 // 展示药品库存和编辑入口。
 export function MedicationInventoryPanel({ medications, onEdit, onDelete }) {
   return (
-    <section className="panel" id="medications">
+    <section className="panel" id="medications" data-guide="medications">
       <SectionHeader title="药品管理" description="库存低于 7 天会进入补药提醒。" icon={Pill} />
       {medications.length === 0 ? (
         <EmptyState title="还没有药品" description="先添加药品，页面会生成用药和补药计划。" />
@@ -120,7 +120,7 @@ export function MedicationInventoryPanel({ medications, onEdit, onDelete }) {
 // 展示补药计划列表。
 export function RefillPlanPanel({ refillPlan }) {
   return (
-    <section className="panel" id="refill">
+    <section className="panel" id="refill" data-guide="refill">
       <SectionHeader title="补药计划" description="按预计用完时间自动排序。" icon={Basket} />
       {refillPlan.length === 0 ? (
         <EmptyState title="暂无补药任务" description="添加药品库存后，会自动计算补药日期。" />

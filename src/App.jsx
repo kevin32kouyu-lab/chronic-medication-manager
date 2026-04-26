@@ -10,9 +10,11 @@ import {
   updateMedicationInState,
 } from "./lib/appState.js";
 import { buildAiSummary, buildDashboardStats, buildRefillPlan, buildWeeklyAdherence } from "./lib/healthRules.js";
+import { hasSeenOnboarding, markOnboardingSeen } from "./lib/onboardingGuide.js";
 import { clearSavedState, loadSavedState, saveState } from "./lib/storage.js";
 import { createSampleData, getTodayKey } from "./data/sampleData.js";
 import { PageHeader, Sidebar, StatsGrid } from "./components/Shell.jsx";
+import { GuidedTour } from "./components/GuidedTour.jsx";
 import {
   MedicationFormPanel,
   MedicationInventoryPanel,
@@ -25,6 +27,7 @@ import { AdherencePanel, AiSummaryPanel, PurchasePanel, ReviewPanel } from "./co
 export default function App() {
   const today = useMemo(() => getTodayKey(), []);
   const [editingMedication, setEditingMedication] = useState(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(() => !hasSeenOnboarding());
   const [state, setState] = useState(() => {
     const savedState = loadSavedState();
     return ensureTodayIntakeRecords(savedState || createSampleData(today), today);
@@ -94,11 +97,22 @@ export default function App() {
     setState(createSampleData(today));
   }
 
+  // 手动打开新用户功能指引。
+  function handleStartGuide() {
+    setIsGuideOpen(true);
+  }
+
+  // 完成或跳过指引后，记录用户已经看过。
+  function handleGuideFinish() {
+    markOnboardingSeen();
+    setIsGuideOpen(false);
+  }
+
   return (
     <div className="app-shell">
       <Sidebar />
       <main className="main-content">
-        <PageHeader patient={state.patient} today={today} onReset={handleResetDemo} />
+        <PageHeader patient={state.patient} today={today} onReset={handleResetDemo} onStartGuide={handleStartGuide} />
         <StatsGrid stats={dashboardStats} />
 
         <div className="content-grid">
@@ -130,6 +144,7 @@ export default function App() {
           />
         </div>
       </main>
+      <GuidedTour isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} onFinish={handleGuideFinish} />
     </div>
   );
 }
