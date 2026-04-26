@@ -1,24 +1,20 @@
 // 这个文件提供应用外壳、侧边导航和通用展示组件，和 App 主界面配合使用。
 import {
   Basket,
-  Brain,
   CalendarCheck,
-  ChartLineUp,
   ClipboardText,
   Info,
   Pill,
+  UserCircle,
   WarningCircle,
 } from "@phosphor-icons/react";
-import { appBrand, buildPatientContext } from "../lib/brand.js";
+import { appBrand } from "../lib/brand.js";
 
 const navItems = [
-  { href: "#overview", label: "总览", icon: ChartLineUp },
+  { href: "#screen-today", label: "今日用药", icon: Pill },
+  { href: "#screen-stock", label: "库存补药", icon: Basket },
+  { href: "#screen-review", label: "复诊档案", icon: CalendarCheck },
   { href: "#care-loop", label: "服务闭环", icon: ClipboardText },
-  { href: "#today", label: "今日用药", icon: Pill },
-  { href: "#medications", label: "药品管理", icon: ClipboardText },
-  { href: "#refill", label: "补药计划", icon: Basket },
-  { href: "#review", label: "复诊管理", icon: CalendarCheck },
-  { href: "#ai", label: "AI 摘要", icon: Brain },
 ];
 
 // 渲染固定左侧导航。
@@ -50,23 +46,19 @@ export function Sidebar() {
 }
 
 // 渲染页面顶部说明和操作。
-export function PageHeader({ patient, today, onReset, onStartGuide }) {
+export function PageHeader({ today, onReset, onStartGuide, onOpenProfile }) {
   return (
     <header className="page-header">
       <div className="header-main">
         <p className="eyebrow">今日日期 {today}</p>
         <h2>{appBrand.name}</h2>
         <p className="header-copy">{appBrand.tagline}</p>
-        <div className="tag-row">
-          <span className="tag patient-tag">{buildPatientContext(patient)}</span>
-          {patient.tags.map((tag) => (
-            <span className="tag" key={tag}>
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
       <div className="header-actions">
+        <button className="ghost-button" type="button" data-guide="profile" onClick={onOpenProfile}>
+          <UserCircle size={17} />
+          个人档案
+        </button>
         <button className="ghost-button" type="button" onClick={onStartGuide}>
           <Info size={17} />
           查看指引

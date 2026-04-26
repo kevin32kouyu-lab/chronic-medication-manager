@@ -1,4 +1,5 @@
 // 这个文件集中处理页面状态变化，和 App 组件、测试文件共同使用。
+import { buildAssistantRecord } from "./voiceAssistant.js";
 
 // 生成简单稳定的记录编号。
 export function createId(prefix) {
@@ -19,22 +20,35 @@ export function createIntakeRecordsForMedication(medication, date) {
 
 // 补齐当天还没有生成的用药记录。
 export function ensureTodayIntakeRecords(state, today) {
+  const safeState = ensureStateShape(state);
   const existingKeys = new Set(
-    state.intakeRecords.map((record) => `${record.date}-${record.medicationId}-${record.time}`)
+    safeState.intakeRecords.map((record) => `${record.date}-${record.medicationId}-${record.time}`)
   );
-  const missingRecords = state.medications.flatMap((medication) =>
+  const missingRecords = safeState.medications.flatMap((medication) =>
     createIntakeRecordsForMedication(medication, today).filter(
       (record) => !existingKeys.has(`${record.date}-${record.medicationId}-${record.time}`)
     )
   );
 
   if (missingRecords.length === 0) {
-    return state;
+    return safeState;
   }
 
   return {
+    ...safeState,
+    intakeRecords: [...safeState.intakeRecords, ...missingRecords],
+  };
+}
+
+// 补齐旧本地状态可能缺失的新字段。
+export function ensureStateShape(state) {
+  return {
     ...state,
-    intakeRecords: [...state.intakeRecords, ...missingRecords],
+    medications: state.medications || [],
+    intakeRecords: state.intakeRecords || [],
+    purchaseRecords: state.purchaseRecords || [],
+    reviewRecords: state.reviewRecords || [],
+    assistantRecords: state.assistantRecords || [],
   };
 }
 
@@ -139,6 +153,55 @@ export function addReviewToState(state, reviewInput) {
     nextReview: review,
     reviewRecords: [review, ...state.reviewRecords],
   };
+}
+
+// 新增一条助手记录，最多保留最近 8 条。
+export function addAssistantRecordToState(state, assistantRecord) {
+  const safeState = ensureStateShape(state);
+
+  return {
+    ...safeState,
+    assistantRecords: [assistantRecord, ...safeState.assistantRecords].slice(0, 8),
+  };
+}
+
+// 确认助手识别出的动作，并复用现有状态更新规则。
+export function confirmAssistantAction(state, action, today) {
+  const safeState = ensureStateShape(state);
+  let nextState = safeState;
+  let resultText = "已记录。";
+
+  if (action.type === "intake") {
+    const targetRecord = safeState.intakeRecords.find((record) => record.id === action.recordId);
+    nextState = targetRecord?.completed ? safeState : toggleIntakeRecord(safeState, action.recordId);
+    resultText = `已记录${action.medicationName} ${action.time} 用药，并同步更新库存。`;
+  }
+
+  if (action.type === "purchase") {
+    nextState = addPurchaseToState(safeState, {
+      medicationId: action.medicationId,
+      medicationName: action.medicationName,
+      quantity: action.quantity,
+      channel: action.channel || "社区药房",
+      date: action.date || today,
+    });
+    resultText = `已记录购买${action.medicationName} ${action.quantity} 份，并同步增加库存。`;
+  }
+
+  if (action.type === "medication") {
+    nextState = addMedicationToState(safeState, action.medication, today);
+    resultText = `已新增${action.medication.name}，并生成今日用药计划。`;
+  }
+
+  if (action.type === "review") {
+    nextState = addReviewToState(safeState, action.review);
+    resultText = `已记录 ${action.review.date} ${action.review.hospital}${action.review.department}复诊。`;
+  }
+
+  return addAssistantRecordToState(
+    nextState,
+    buildAssistantRecord(action.transcript || "", action.type, resultText)
+  );
 }
 
 // 把时间字段整理成数组。

@@ -10,6 +10,12 @@ export const onboardingSteps = [
     selector: '[data-guide="overview"]',
   },
   {
+    id: "screen-nav",
+    title: "三屏闭环导航",
+    description: "这里把页面分成今日用药、库存补药和复诊档案三屏，点击后可以快速跳到对应区域。",
+    selector: '[data-guide="screen-nav"]',
+  },
+  {
     id: "care-loop",
     title: "连续服务闭环",
     description: "这里把问诊、购药、用药、库存和续方串成一条线，帮助你判断当前卡在哪一步。",
@@ -20,6 +26,12 @@ export const onboardingSteps = [
     title: "今日用药",
     description: "这里按时间列出当天要服用的药品。点击打卡后，完成数和药品库存会自动同步更新。",
     selector: '[data-guide="today"]',
+  },
+  {
+    id: "voice-assistant",
+    title: "AI 语音助手",
+    description: "这里可以用示例语音、文字输入或浏览器麦克风记录服药、购药、新增药品和复诊信息。",
+    selector: '[data-guide="voice-assistant"]',
   },
   {
     id: "ai",
@@ -38,6 +50,12 @@ export const onboardingSteps = [
     title: "续方准备",
     description: "这里把复诊前要准备的用药记录、库存风险和漏服情况汇总起来，也能生成复诊摘要。",
     selector: '[data-guide="renewal-prep"]',
+  },
+  {
+    id: "profile",
+    title: "个人档案",
+    description: "个人健康信息默认收起，需要查看时再打开，减少首页直白暴露。",
+    selector: '[data-guide="profile"]',
   },
   {
     id: "medications",

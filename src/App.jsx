@@ -4,7 +4,9 @@ import {
   addMedicationToState,
   addPurchaseToState,
   addReviewToState,
+  confirmAssistantAction,
   deleteMedicationFromState,
+  ensureStateShape,
   ensureTodayIntakeRecords,
   toggleIntakeRecord,
   updateMedicationInState,
@@ -19,25 +21,26 @@ import { buildAiSummary, buildDashboardStats, buildRefillPlan, buildWeeklyAdhere
 import { hasSeenOnboarding, markOnboardingSeen } from "./lib/onboardingGuide.js";
 import { clearSavedState, loadSavedState, saveState } from "./lib/storage.js";
 import { createSampleData, getTodayKey } from "./data/sampleData.js";
-import { PageHeader, Sidebar, StatsGrid } from "./components/Shell.jsx";
+import { PageHeader, Sidebar } from "./components/Shell.jsx";
 import { GuidedTour } from "./components/GuidedTour.jsx";
-import { CareLoopPanel, PurchaseChecklistPanel, RenewalPrepPanel } from "./components/ContinuityPanels.jsx";
 import {
-  MedicationFormPanel,
-  MedicationInventoryPanel,
-  RefillPlanPanel,
-  TodayMedicationPanel,
-} from "./components/MedicationPanels.jsx";
-import { AdherencePanel, AiSummaryPanel, PurchasePanel, ReviewPanel } from "./components/CarePanels.jsx";
+  MedicationTodayScreen,
+  ReviewProfileScreen,
+  StockRefillScreen,
+  ThreeScreenNav,
+} from "./components/ScreenSections.jsx";
+import { ProfileDrawer } from "./components/ProfileDrawer.jsx";
+import { VoiceAssistant } from "./components/VoiceAssistant.jsx";
 
 // 渲染整个网页应用。
 export default function App() {
   const today = useMemo(() => getTodayKey(), []);
   const [editingMedication, setEditingMedication] = useState(null);
   const [isGuideOpen, setIsGuideOpen] = useState(() => !hasSeenOnboarding());
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [state, setState] = useState(() => {
     const savedState = loadSavedState();
-    return ensureTodayIntakeRecords(savedState || createSampleData(today), today);
+    return ensureTodayIntakeRecords(ensureStateShape(savedState || createSampleData(today)), today);
   });
 
   const todayRecords = useMemo(
@@ -114,11 +117,16 @@ export default function App() {
     setState((current) => addReviewToState(current, form));
   }
 
+  // 确认 AI 助手识别出的记录。
+  function handleConfirmAssistantAction(action) {
+    setState((current) => confirmAssistantAction(current, action, today));
+  }
+
   // 重置演示数据。
   function handleResetDemo() {
     clearSavedState();
     setEditingMedication(null);
-    setState(createSampleData(today));
+    setState(ensureStateShape(createSampleData(today)));
   }
 
   // 手动打开新用户功能指引。
@@ -136,41 +144,56 @@ export default function App() {
     <div className="app-shell">
       <Sidebar />
       <main className="main-content">
-        <PageHeader patient={state.patient} today={today} onReset={handleResetDemo} onStartGuide={handleStartGuide} />
-        <StatsGrid stats={dashboardStats} />
-        <CareLoopPanel steps={careLoopSteps} />
-
-        <div className="content-grid">
-          <TodayMedicationPanel records={todayRecords} medications={state.medications} onToggle={handleToggleIntake} />
-          <AiSummaryPanel summary={aiSummary} />
-          <PurchaseChecklistPanel items={purchaseChecklist} onComplete={handleCompleteSuggestedPurchase} />
-          <RenewalPrepPanel prep={renewalPrep} summary={renewalSummary} />
-          <MedicationInventoryPanel
-            medications={state.medications}
-            onEdit={setEditingMedication}
-            onDelete={handleDeleteMedication}
-          />
-          <RefillPlanPanel refillPlan={refillPlan} />
-          <MedicationFormPanel
-            editingMedication={editingMedication}
-            onSubmit={handleMedicationSubmit}
-            onCancel={() => setEditingMedication(null)}
-          />
-          <ReviewPanel
-            nextReview={state.nextReview}
-            reviewRecords={state.reviewRecords}
-            today={today}
-            onAddReview={handleAddReview}
-          />
-          <AdherencePanel intakeRecords={state.intakeRecords} today={today} adherence={adherence} />
-          <PurchasePanel
-            medications={state.medications}
-            purchaseRecords={state.purchaseRecords}
-            today={today}
-            onAddPurchase={handleAddPurchase}
-          />
-        </div>
+        <PageHeader
+          today={today}
+          onReset={handleResetDemo}
+          onStartGuide={handleStartGuide}
+          onOpenProfile={() => setIsProfileOpen(true)}
+        />
+        <ThreeScreenNav />
+        <MedicationTodayScreen
+          dashboardStats={dashboardStats}
+          careLoopSteps={careLoopSteps}
+          todayRecords={todayRecords}
+          medications={state.medications}
+          onToggleIntake={handleToggleIntake}
+          aiSummary={aiSummary}
+        />
+        <StockRefillScreen
+          medications={state.medications}
+          refillPlan={refillPlan}
+          purchaseChecklist={purchaseChecklist}
+          purchaseRecords={state.purchaseRecords}
+          today={today}
+          editingMedication={editingMedication}
+          onEditMedication={setEditingMedication}
+          onDeleteMedication={handleDeleteMedication}
+          onMedicationSubmit={handleMedicationSubmit}
+          onCancelMedicationEdit={() => setEditingMedication(null)}
+          onCompleteSuggestedPurchase={handleCompleteSuggestedPurchase}
+          onAddPurchase={handleAddPurchase}
+        />
+        <ReviewProfileScreen
+          renewalPrep={renewalPrep}
+          renewalSummary={renewalSummary}
+          nextReview={state.nextReview}
+          reviewRecords={state.reviewRecords}
+          today={today}
+          onAddReview={handleAddReview}
+          intakeRecords={state.intakeRecords}
+          adherence={adherence}
+        />
       </main>
+      <ProfileDrawer
+        isOpen={isProfileOpen}
+        patient={state.patient}
+        medications={state.medications}
+        nextReview={state.nextReview}
+        adherence={adherence}
+        renewalSummary={renewalSummary}
+        onClose={() => setIsProfileOpen(false)}
+      />
+      <VoiceAssistant state={state} today={today} onConfirm={handleConfirmAssistantAction} />
       <GuidedTour isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} onFinish={handleGuideFinish} />
     </div>
   );

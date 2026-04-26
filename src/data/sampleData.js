@@ -86,6 +86,7 @@ export function createSampleData(today = getTodayKey()) {
         channel: "线上复购",
       },
     ],
+    assistantRecords: [],
   };
 }
 
