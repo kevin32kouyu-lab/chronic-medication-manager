@@ -143,18 +143,23 @@ select {
   gap: 7px;
 }
 
-.nav-list a {
+.nav-list button {
   position: relative;
   min-height: 42px;
   padding: 0 12px;
+  border: 0;
   color: rgba(242, 250, 247, 0.78);
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   transition:
     color 220ms var(--ease-out),
     background 220ms var(--ease-out),
     transform 220ms var(--ease-out);
 }
 
-.nav-list a::before {
+.nav-list button::before {
   position: absolute;
   top: 9px;
   bottom: 9px;
@@ -170,15 +175,17 @@ select {
     transform 220ms var(--ease-out);
 }
 
-.nav-list a:hover,
-.nav-list a:focus-visible {
+.nav-list button:hover,
+.nav-list button:focus-visible,
+.nav-list button.is-active {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.12);
   transform: translateX(3px);
 }
 
-.nav-list a:hover::before,
-.nav-list a:focus-visible::before {
+.nav-list button:hover::before,
+.nav-list button:focus-visible::before,
+.nav-list button.is-active::before {
   opacity: 1;
   transform: scaleY(1);
 }
@@ -1043,7 +1050,7 @@ select {
   backdrop-filter: blur(16px);
 }
 
-.screen-nav a {
+.screen-nav button {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1053,6 +1060,9 @@ select {
   border-radius: 10px;
   color: #405468;
   background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   transition:
     border-color 220ms var(--ease-out),
     background 220ms var(--ease-out),
@@ -1060,7 +1070,9 @@ select {
     transform 220ms var(--ease-out);
 }
 
-.screen-nav a:hover {
+.screen-nav button:hover,
+.screen-nav button:focus-visible,
+.screen-nav button.is-active {
   color: #1f604b;
   border-color: rgba(35, 116, 89, 0.14);
   background: #ffffff;

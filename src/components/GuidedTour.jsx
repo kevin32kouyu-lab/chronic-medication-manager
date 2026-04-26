@@ -25,7 +25,7 @@ function normalizeRect(rect) {
 }
 
 // 渲染欢迎弹窗和分步功能区指引。
-export function GuidedTour({ isOpen, onClose, onFinish }) {
+export function GuidedTour({ isOpen, onClose, onFinish, onStepChange }) {
   const [mode, setMode] = useState("welcome");
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState(null);
@@ -44,6 +44,7 @@ export function GuidedTour({ isOpen, onClose, onFinish }) {
     if (!isOpen || mode !== "tour" || !currentStep) return undefined;
 
     let timeoutId;
+    onStepChange?.(currentStep);
 
     // 更新当前讲解目标的位置。
     function updateTargetRect() {
@@ -69,7 +70,7 @@ export function GuidedTour({ isOpen, onClose, onFinish }) {
       timeoutId = window.setTimeout(updateTargetRect, 360);
     }
 
-    scrollToTarget();
+    timeoutId = window.setTimeout(scrollToTarget, 140);
     window.addEventListener("resize", updateTargetRect);
     window.addEventListener("scroll", updateTargetRect, true);
 
@@ -78,7 +79,7 @@ export function GuidedTour({ isOpen, onClose, onFinish }) {
       window.removeEventListener("resize", updateTargetRect);
       window.removeEventListener("scroll", updateTargetRect, true);
     };
-  }, [currentStep, isOpen, mode]);
+  }, [currentStep, isOpen, mode, onStepChange]);
 
   useEffect(() => {
     if (!isOpen) return undefined;

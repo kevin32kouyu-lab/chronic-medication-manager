@@ -1,5 +1,6 @@
 // 这个文件把首页整理成今日用药、库存补药和复诊档案三屏工作台。
 import { Basket, CalendarCheck, ChartLineUp, Pill } from "@phosphor-icons/react";
+import { screenDefinitions } from "../lib/screenNavigation.js";
 import { StatsGrid } from "./Shell.jsx";
 import { CareLoopPanel, PurchaseChecklistPanel, RenewalPrepPanel } from "./ContinuityPanels.jsx";
 import {
@@ -10,26 +11,33 @@ import {
 } from "./MedicationPanels.jsx";
 import { AdherencePanel, AiSummaryPanel, PurchasePanel, ReviewPanel } from "./CarePanels.jsx";
 
-const screens = [
-  { href: "#screen-today", label: "今日用药", description: "先确认今天要做的事", icon: Pill },
-  { href: "#screen-stock", label: "库存补药", description: "查看药够不够", icon: Basket },
-  { href: "#screen-review", label: "复诊档案", description: "整理续方资料", icon: CalendarCheck },
-];
+const screenIcons = {
+  today: Pill,
+  stock: Basket,
+  review: CalendarCheck,
+};
 
 // 渲染三屏顶部导航。
-export function ThreeScreenNav() {
+export function ThreeScreenNav({ activeScreen, onScreenChange }) {
   return (
     <nav className="screen-nav" data-guide="screen-nav" aria-label="三屏闭环导航">
-      {screens.map((screen) => {
-        const Icon = screen.icon;
+      {screenDefinitions.map((screen) => {
+        const Icon = screenIcons[screen.id];
+        const isActive = activeScreen === screen.id;
         return (
-          <a href={screen.href} key={screen.href}>
+          <button
+            type="button"
+            className={isActive ? "is-active" : ""}
+            aria-pressed={isActive}
+            onClick={() => onScreenChange(screen.id)}
+            key={screen.id}
+          >
             <Icon size={20} />
             <span>
               <strong>{screen.label}</strong>
               <small>{screen.description}</small>
             </span>
-          </a>
+          </button>
         );
       })}
     </nav>

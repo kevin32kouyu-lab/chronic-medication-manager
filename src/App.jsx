@@ -19,6 +19,7 @@ import {
 } from "./lib/careLoop.js";
 import { buildAiSummary, buildDashboardStats, buildRefillPlan, buildWeeklyAdherence } from "./lib/healthRules.js";
 import { hasSeenOnboarding, markOnboardingSeen } from "./lib/onboardingGuide.js";
+import { getScreenForGuideStep } from "./lib/screenNavigation.js";
 import { clearSavedState, loadSavedState, saveState } from "./lib/storage.js";
 import { createSampleData, getTodayKey } from "./data/sampleData.js";
 import { PageHeader, Sidebar } from "./components/Shell.jsx";
@@ -35,6 +36,7 @@ import { VoiceAssistant } from "./components/VoiceAssistant.jsx";
 // 渲染整个网页应用。
 export default function App() {
   const today = useMemo(() => getTodayKey(), []);
+  const [activeScreen, setActiveScreen] = useState("today");
   const [editingMedication, setEditingMedication] = useState(null);
   const [isGuideOpen, setIsGuideOpen] = useState(() => !hasSeenOnboarding());
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -131,6 +133,7 @@ export default function App() {
 
   // 手动打开新用户功能指引。
   function handleStartGuide() {
+    setActiveScreen("today");
     setIsGuideOpen(true);
   }
 
@@ -140,9 +143,14 @@ export default function App() {
     setIsGuideOpen(false);
   }
 
+  // 新手指引讲到不同功能区时，先切换到该功能所在屏幕。
+  function handleGuideStepChange(step) {
+    setActiveScreen(getScreenForGuideStep(step.id));
+  }
+
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Sidebar activeScreen={activeScreen} onScreenChange={setActiveScreen} />
       <main className="main-content">
         <PageHeader
           today={today}
@@ -150,39 +158,45 @@ export default function App() {
           onStartGuide={handleStartGuide}
           onOpenProfile={() => setIsProfileOpen(true)}
         />
-        <ThreeScreenNav />
-        <MedicationTodayScreen
-          dashboardStats={dashboardStats}
-          careLoopSteps={careLoopSteps}
-          todayRecords={todayRecords}
-          medications={state.medications}
-          onToggleIntake={handleToggleIntake}
-          aiSummary={aiSummary}
-        />
-        <StockRefillScreen
-          medications={state.medications}
-          refillPlan={refillPlan}
-          purchaseChecklist={purchaseChecklist}
-          purchaseRecords={state.purchaseRecords}
-          today={today}
-          editingMedication={editingMedication}
-          onEditMedication={setEditingMedication}
-          onDeleteMedication={handleDeleteMedication}
-          onMedicationSubmit={handleMedicationSubmit}
-          onCancelMedicationEdit={() => setEditingMedication(null)}
-          onCompleteSuggestedPurchase={handleCompleteSuggestedPurchase}
-          onAddPurchase={handleAddPurchase}
-        />
-        <ReviewProfileScreen
-          renewalPrep={renewalPrep}
-          renewalSummary={renewalSummary}
-          nextReview={state.nextReview}
-          reviewRecords={state.reviewRecords}
-          today={today}
-          onAddReview={handleAddReview}
-          intakeRecords={state.intakeRecords}
-          adherence={adherence}
-        />
+        <ThreeScreenNav activeScreen={activeScreen} onScreenChange={setActiveScreen} />
+        {activeScreen === "today" ? (
+          <MedicationTodayScreen
+            dashboardStats={dashboardStats}
+            careLoopSteps={careLoopSteps}
+            todayRecords={todayRecords}
+            medications={state.medications}
+            onToggleIntake={handleToggleIntake}
+            aiSummary={aiSummary}
+          />
+        ) : null}
+        {activeScreen === "stock" ? (
+          <StockRefillScreen
+            medications={state.medications}
+            refillPlan={refillPlan}
+            purchaseChecklist={purchaseChecklist}
+            purchaseRecords={state.purchaseRecords}
+            today={today}
+            editingMedication={editingMedication}
+            onEditMedication={setEditingMedication}
+            onDeleteMedication={handleDeleteMedication}
+            onMedicationSubmit={handleMedicationSubmit}
+            onCancelMedicationEdit={() => setEditingMedication(null)}
+            onCompleteSuggestedPurchase={handleCompleteSuggestedPurchase}
+            onAddPurchase={handleAddPurchase}
+          />
+        ) : null}
+        {activeScreen === "review" ? (
+          <ReviewProfileScreen
+            renewalPrep={renewalPrep}
+            renewalSummary={renewalSummary}
+            nextReview={state.nextReview}
+            reviewRecords={state.reviewRecords}
+            today={today}
+            onAddReview={handleAddReview}
+            intakeRecords={state.intakeRecords}
+            adherence={adherence}
+          />
+        ) : null}
       </main>
       <ProfileDrawer
         isOpen={isProfileOpen}
@@ -194,7 +208,12 @@ export default function App() {
         onClose={() => setIsProfileOpen(false)}
       />
       <VoiceAssistant state={state} today={today} onConfirm={handleConfirmAssistantAction} />
-      <GuidedTour isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} onFinish={handleGuideFinish} />
+      <GuidedTour
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+        onFinish={handleGuideFinish}
+        onStepChange={handleGuideStepChange}
+      />
     </div>
   );
 }

@@ -2,23 +2,22 @@
 import {
   Basket,
   CalendarCheck,
-  ClipboardText,
   Info,
   Pill,
   UserCircle,
   WarningCircle,
 } from "@phosphor-icons/react";
 import { appBrand } from "../lib/brand.js";
+import { screenDefinitions } from "../lib/screenNavigation.js";
 
-const navItems = [
-  { href: "#screen-today", label: "今日用药", icon: Pill },
-  { href: "#screen-stock", label: "库存补药", icon: Basket },
-  { href: "#screen-review", label: "复诊档案", icon: CalendarCheck },
-  { href: "#care-loop", label: "服务闭环", icon: ClipboardText },
-];
+const navIcons = {
+  today: Pill,
+  stock: Basket,
+  review: CalendarCheck,
+};
 
 // 渲染固定左侧导航。
-export function Sidebar() {
+export function Sidebar({ activeScreen, onScreenChange }) {
   return (
     <aside className="sidebar" aria-label="主导航">
       <div className="brand-mark" aria-hidden="true">
@@ -30,13 +29,20 @@ export function Sidebar() {
         <h1>{appBrand.name}</h1>
       </div>
       <nav className="nav-list">
-        {navItems.map((item) => {
-          const Icon = item.icon;
+        {screenDefinitions.map((item) => {
+          const Icon = navIcons[item.id];
+          const isActive = activeScreen === item.id;
           return (
-            <a key={item.href} href={item.href}>
+            <button
+              type="button"
+              className={isActive ? "is-active" : ""}
+              aria-pressed={isActive}
+              onClick={() => onScreenChange(item.id)}
+              key={item.id}
+            >
               <Icon size={18} />
               <span>{item.label}</span>
-            </a>
+            </button>
           );
         })}
       </nav>
