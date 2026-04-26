@@ -4,5 +4,6 @@ import react from "@vitejs/plugin-react";
 
 // 导出 Vite 配置。
 export default defineConfig({
+  base: process.env.GITHUB_PAGES === "true" ? "/chronic-medication-manager/" : "/",
   plugins: [react()],
 });

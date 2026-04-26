@@ -3,7 +3,8 @@
 ## 文件职责
 
 - `index.html`：网页入口，挂载 React 应用。
-- `vite.config.js`：Vite 构建配置。
+- `vite.config.js`：Vite 构建配置；GitHub Pages 构建时会切换项目页资源路径。
+- `.github/workflows/deploy-pages.yml`：推送到 `main` 后自动测试、构建并发布到 GitHub Pages。
 - `src/main.jsx`：把 React 应用渲染到页面。
 - `src/onboarding.css`：定义新用户指引的遮罩、高亮框和弹窗样式。
 - `src/visual-polish.css`：统一视觉升级层，覆盖字体、色彩、阴影、列表动效和响应式细节。
@@ -34,6 +35,7 @@
 
 - 使用单页应用：评测时打开一个链接即可看到完整作品。
 - 使用本地保存：不需要后端，也能演示刷新后数据不丢失。
+- Vercel 和 GitHub Pages 共存：默认构建保持根路径给 Vercel 使用，GitHub Pages 构建时通过环境变量切换到仓库子路径。
 - 把规则和页面分开：补药、漏服、复诊和摘要规则可以单独测试，页面只负责展示和交互。
 - 默认加载示例患者：评测者进入页面后无需先录入数据，就能看到完整闭环。
 - AI 摘要使用规则生成：能随数据变化，但不冒充真实医疗诊断。

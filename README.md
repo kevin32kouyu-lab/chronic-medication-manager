@@ -44,6 +44,12 @@ npm run build
 
 构建产物会生成在 `dist` 目录，可部署到 Vercel、Netlify 或其他静态网页托管平台。
 
+GitHub Pages 已配置自动部署。推送到 `main` 后，GitHub Actions 会运行测试、构建并发布到：
+
+```text
+https://kevin32kouyu-lab.github.io/chronic-medication-manager/
+```
+
 ## 测试
 
 ```bash
@@ -84,6 +90,7 @@ tests/          规则和状态测试
 - [skills.sh](https://skills.sh/)：查看了可用的前端、测试和部署相关技能目录，当前项目不需要新增外部技能或依赖。
 - GitHub：参考了 [byte-guide](https://github.com/bytedance/guide)、[react-shepherd](https://github.com/shepherd-pro/react-shepherd)、[onborda](https://github.com/uixmat/onborda) 等引导组件方案。项目已具备自定义指引组件，因此继续保留轻量实现，避免增加额外依赖。
 - GitHub：查看了药品追踪类项目方向，确认“库存倒计时、补药提醒、用药记录”是同类工具的常见核心能力，本次增强重点放在“问诊 - 购药 - 用药 - 续方”的页面闭环表达。
+- GitHub Pages：参考 GitHub 官方 Pages 工作流和 Vite 项目页路径要求，采用 `GITHUB_PAGES=true` 单独切换资源路径，避免影响 Vercel 根路径部署。
 
 ## 已完成功能与待办
 
